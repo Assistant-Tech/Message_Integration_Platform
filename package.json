@@ -1,0 +1,39 @@
+{
+  "name": "message_integration",
+  "version": "1.0.0",
+  "description": "This is a monorepo containing both the frontend and backend applications for the Message Integration project.",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "dev": "turbo run dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Assistant-Tech/Message-Integration-Platform.git"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "packageManager": "npm@11.1.0",
+  "bugs": {
+    "url": "https://github.com/Assistant-Tech/Message-Integration-Platform/issues"
+  },
+  "homepage": "https://github.com/Assistant-Tech/Message-Integration-Platform#readme",
+  "devDependencies": {
+    "eslint-config-turbo": "^2.4.0",
+    "prettier": "^3.4.2",
+    "turbo": "^2.4.0"
+  },
+  "dependencies": {
+    "axios": "^1.7.9"
+  }
+}
