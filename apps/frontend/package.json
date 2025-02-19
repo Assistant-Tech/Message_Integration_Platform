@@ -11,8 +11,10 @@
   "dependencies": {
     "@react-router/node": "^7.1.5",
     "@react-router/serve": "^7.1.5",
+    "@tanstack/react-query": "^5.66.7",
     "eslint-plugin-react": "^7.37.4",
     "isbot": "^5.1.17",
+    "motion": "^12.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-router": "^7.1.5"
@@ -21,6 +23,7 @@
     "@eslint/js": "^9.20.0",
     "@react-router/dev": "^7.1.5",
     "@repo/eslint-config": "*",
+    "@repo/shared-types": "*",
     "@tailwindcss/vite": "^4.0.0",
     "@types/node": "^20",
     "@types/react": "^19.0.1",

@@ -2,6 +2,11 @@
 node_modules
 .pnp
 .pnp.js
+.DS_Store
+
+# React Router
+.react-router
+build
 
 
 #lock file

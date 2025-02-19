@@ -1,7 +1,7 @@
-/* eslint-disable no-empty-pattern */
-/* eslint-disable react-refresh/only-export-components */
 import Foo from '~/foo/foo';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import type { Route } from './+types/home';
+
 export function meta({}: Route.MetaArgs) {
   return [
     { title: 'Assistant Tech' },
@@ -12,11 +12,14 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+const queryClinet = new QueryClient();
 export default function Home() {
   return (
-    <div className="flex flex-col">
-      <main>This is the home route</main>
-      <Foo />
-    </div>
+    <QueryClientProvider client={queryClinet}>
+      <div className="flex flex-col">
+        <main>This is the home route</main>
+        <Foo />
+      </div>
+    </QueryClientProvider>
   );
 }
