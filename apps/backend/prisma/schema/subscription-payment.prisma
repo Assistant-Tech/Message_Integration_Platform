@@ -1,0 +1,59 @@
+// Subscription and Payment Management
+
+model Subscription {
+  id            String             @id @default(uuid())
+  tenantId      String             @unique @map("tenantId")
+  plan          SubscriptionPlan   @default(FREE) @map("plan")
+  status        SubscriptionStatus @map("status")
+  startDate     DateTime           @map("start_date")
+  endDate       DateTime           @map("end_date")
+  createdAt     DateTime           @default(now()) @map("created_at")
+  updatedAt     DateTime           @updatedAt @map("updated_at")
+  deletedAt     DateTime?          @map("deleted_at")
+  //relations
+  tenant        Tenant             @relation(fields: [tenantId], references: [id])
+  PaymentMethod PaymentMethod?
+
+  @@index([status])
+  @@index([plan])
+  @@map("subscriptions")
+}
+
+model PaymentMethod {
+  id             String      @id @default(uuid())
+  subscriptionId String      @unique @map("subscription_id")
+  type           PaymentType @map("payment_type")
+  details        Json //encrypted payment details
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+  deletedAt      DateTime?   @map("deleted_at")
+
+  //relations
+  subscription Subscription @relation(fields: [subscriptionId], references: [id])
+
+  @@index([subscriptionId])
+  @@index([type])
+  @@map("payment_method")
+}
+
+enum SubscriptionPlan {
+  FREE
+  BASIC
+  PREMIUM
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  EXPIRED
+  CANCLED
+  TRIAL
+}
+
+enum PaymentType {
+  CREDIT_CARD
+  ESEWA
+  FONE_PAY
+  KHALTI
+  CONNECT_IPS
+}

@@ -1,18 +1,19 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { FooModule } from './foo/foo.module';
 import { APP_INTERCEPTOR, APP_PIPE } from '@nestjs/core';
 import { ZodSerializerInterceptor, ZodValidationPipe } from 'nestjs-zod';
 import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from './prisma/prisma.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
+      isGlobal: true
     }),
-    FooModule,
+    PrismaModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [
@@ -27,4 +28,4 @@ import { ConfigModule } from '@nestjs/config';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

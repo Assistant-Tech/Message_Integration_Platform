@@ -1,6 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
-import type { IUserResponseType, IUserType } from '@repo/shared-types';
 import axios from 'axios';
+import type { IUserType, IUserResponseType } from '@repo/shared-types';
 
 function Foo() {
   const payload: IUserType = {
@@ -14,7 +14,7 @@ function Foo() {
       const response = await axios.post(
         'http://localhost:3000/api/foo',
         payload,
-      );
+      ;
       return response.data;
     },
   });

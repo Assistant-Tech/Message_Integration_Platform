@@ -1,0 +1,121 @@
+// Tenant and user management schema
+
+model Tenant {
+  id               String        @id @default(uuid())
+  organizationName String        @unique @map("organization_name")
+  createdAt        DateTime      @default(now()) @map("created_at")
+  updatedAt        DateTime      @updatedAt @map("updated_at")
+  deletedAt        DateTime?     @map("deleted_at")
+  // relations
+  Users            User[]
+  Subscription     Subscription?
+
+  @@map("tenants")
+}
+
+model User {
+  id         String     @id @default(uuid())
+  email      String     @unique
+  name       String
+  password   String
+  createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
+  deletedAt  DateTime?  @map("deleted_at")
+  userStatus UserStatus @default(ONLINE) @map("user_status")
+  //foregin keys
+  roleId     String     @map("role_id")
+  tenantId   String     @map("tenant_id")
+
+  // relations
+  role        Role          @relation(fields: [roleId], references: [id], onDelete: Restrict)
+  tenant      Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  AccessToken AccessToken[]
+
+  @@unique([email, tenantId])
+  @@index([tenantId])
+  @@index([roleId])
+  @@map("users")
+}
+
+//Role model for RBAC
+model Role {
+  id          String           @id @default(uuid())
+  type        SystemRoles      @unique
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  deletedAt   DateTime?        @map("deleted_at")
+  //relations
+  users       User[]
+  permissions RolePermission[]
+
+  @@map("roles")
+}
+
+model Permission {
+  id          String           @id @default(uuid())
+  name        PermissionKey    @unique
+  description String?
+  createdAt   DateTime         @default(now()) @map("created_at")
+  updatedAt   DateTime         @updatedAt @map("updated_at")
+  deletedAt   DateTime?        @map("deleted_at")
+  //relations
+  roles       RolePermission[]
+
+  @@map("permissions")
+}
+
+model RolePermission {
+  roleId       String    @map("role_id")
+  permissionId String    @map("permission_id")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  //relations
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+  @@index([roleId, permissionId])
+  @@map("role_permissions")
+}
+
+model AccessToken {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  userId    String    @map("user_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  //relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@map("access_tokens")
+}
+
+enum SystemRoles {
+  SUPER_ADMIN
+  TENANT_ADMIN
+  MEMBER
+  GUEST
+}
+
+enum UserStatus {
+  ONLINE
+  OFFLINE
+  BUSY
+  AWAY
+}
+
+enum PermissionKey {
+  MANAGE_TENANT
+  MANAGE_USERS
+  MANAGE_ROLES
+  VIEW_CONTENT
+  EDIT_OWN_PROFILE
+  MANAGE_BILLING
+  ASSIGN_MESSAGES
+  VIEW_ASSIGNED_MESSAGES
+  DELETE_MESSAGES
+}
